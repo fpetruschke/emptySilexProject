@@ -1,0 +1,25 @@
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">
+    <span class="glyphicon glyphicon-list pull-left"></span>
+    Your role is: {{ user.role.name }}
+</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Sorry.</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p>As a normal user, you are not allowed to see all the other roles.<br>
+                Yout might want to sign in with another user that has the necessary permission..</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

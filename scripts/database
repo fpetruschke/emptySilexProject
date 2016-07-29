@@ -1,0 +1,115 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.10deb1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Mar 18, 2016 at 06:02 AM
+-- Server version: 5.5.47-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.14
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `emptyProjectSilex`
+--
+
+-- --------------------------------------------------------
+
+CREATE DATABASE IF NOT EXISTS `emptyProjectSilex`
+  CHARACTER SET utf8
+  COLLATE utf8_general_ci;
+
+--
+-- Table structure for table `roles`
+--
+-- Creation: Feb 10, 2016 at 03:46 PM
+--
+
+CREATE TABLE IF NOT EXISTS `emptyProjectSilex`.`roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `emptyProjectSilex`.`roles` (`id`, `name`) VALUES
+(1, 'NONE'),
+(2, 'USER'),
+(3, 'ADMIN'),
+(4, 'SUPERADMIN'),
+(5, 'MASTEREYE');
+
+-- --------------------------------------------------------
+
+
+--
+-- Table structure for table `users`
+--
+-- Creation: Mar 17, 2016 at 11:25 AM
+--
+
+CREATE TABLE IF NOT EXISTS `emptyProjectSilex`.`users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL DEFAULT '1',
+  `name` varchar(255) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
+  `contraction` varchar(255) NOT NULL,
+  `callthrough` varchar(255) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` text,
+  `email` varchar(255) DEFAULT NULL COMMENT 'Mail-adress of the user',
+  `createdBy` int(11) DEFAULT '1' COMMENT 'Id of the user that created this entry',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_users_roles` (`role_id`),
+  KEY `fk_userCreatedBy` (`createdBy`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=131 ;
+
+--
+-- RELATIONS FOR TABLE `users`:
+--   `createdBy`
+--       `users` -> `id`
+--   `role_id`
+--       `roles` -> `id`
+--
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `emptyProjectSilex`.`users` (`id`, `role_id`, `name`, `firstname`, `contraction`, `callthrough`, `username`, `password`, `email`, `createdBy`, `created_at`) VALUES
+(1, 2, 'Example', 'USER', 'EU', '99', 'exampleUser', '37fa265330ad83eaa879efb1e2db6380896cf639', 'user@emptyProjectSilex.io', 2, NULL),
+(2, 3, 'Example', 'ADMIN', 'EA', '99', 'exampleAdmin', '37fa265330ad83eaa879efb1e2db6380896cf639', 'admin@emptyProjectSilex.io', 2, NULL),
+(3, 4, 'Example', 'SUPERADMIN', 'ES', '99', 'exampleSuperadmin', '37fa265330ad83eaa879efb1e2db6380896cf639', 'superadmin@emptyProjectSilex.io', 2, NULL),
+(4, 5, 'Example', 'MASTEREYE', 'EM', '99', 'exampleMastereye', '37fa265330ad83eaa879efb1e2db6380896cf639', NULL, 2, NULL);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `users`
+--
+USE `emptyProjectSilex`;
+ALTER TABLE `emptyProjectSilex`.`users`
+  ADD CONSTRAINT `fk_userCreatedBy` FOREIGN KEY (`createdBy`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
+
+
+
+--
+-- CREATE USER
+--
+DROP user 'silexAdmin'@'localhost';
+FLUSH PRIVILEGES;
+CREATE USER 'silexAdmin'@'localhost' IDENTIFIED BY 'ADMIN';
+GRANT ALL PRIVILEGES ON `emptyProjectSilex`. * TO 'silexAdmin'@'localhost';

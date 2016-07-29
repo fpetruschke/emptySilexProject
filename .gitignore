@@ -1,0 +1,6 @@
+# IntelliJ project files
+app/logs/
+.idea/
+composer.lock
+*.log
+vendor/

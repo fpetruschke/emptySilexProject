@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    Options +FollowSymLinks
+    RewriteEngine On
+    RewriteCond %{DOCUMENT_ROOT}/web/$1 -f
+    RewriteRule ^((.+)/?)*$ /web/$1 [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ web/index.php [QSA,L]
+    RewriteRule ^\.htaccess$ - [F]
+</IfModule>

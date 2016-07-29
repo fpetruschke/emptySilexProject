@@ -1,0 +1,28 @@
+# config/routes.yml
+blank:
+  path: /emptyProject-Silex/
+  defaults: { _controller: emptyProjectSilex\Controller\AppController::showIndex }
+
+home:
+  path: /emptyProject-Silex/home
+  defaults: { _controller: emptyProjectSilex\Controller\AppController::showIndex }
+
+showAllRoles:
+  path: /emptyProject-Silex/roles/show/all
+  defaults: { _controller: emptyProjectSilex\Controller\AppController::showAll }
+
+showSingleRole:
+  path: /emptyProject-Silex/roles/show/{id}
+  defaults: { _controller: emptyProjectSilex\Controller\showSingle::execute }
+
+userLogin:
+  path: /emptyProject-Silex/user/login
+  defaults: { _controller: emptyProjectSilex\Controller\UserController::login }
+
+userLoginCheck:
+  path: /emptyProject-Silex/user/loginCheck
+  defaults: { _controller: emptyProjectSilex\Controller\UserController::loginCheck }
+
+userLogout:
+  path: /emptyProject-Silex/user/logout
+  defaults: { _controller: emptyProjectSilex\Controller\UserController::logout }

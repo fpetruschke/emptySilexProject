@@ -1,0 +1,60 @@
+{# Starting page after successful login procedure #}
+{% extends '/base/layout.html.twig' %}
+{% block content %}
+    <style>
+        body {
+            overflow:hidden;
+        }
+        #templateHeader {
+            background-color: black;
+            text-align: center;
+            margin-bottom: 2%;
+        }
+        .btn {
+            width: 100%;
+            margin-bottom: 2%;
+        }
+    </style>
+
+    <div id="templateWrapper">
+        <div id="templateHeader">
+            <img src="{{ app.serverRoot }}img/silexExample.png" style='width:30%;' border="0">
+        </div>
+        <div id="templateContent">
+            <div class="row">
+                <div class="col-md-4" id="leftBlank"></div>
+                <div class="col-md-4" id="center">
+                    <div class="row">
+                        {% if user.role.name == 'USER' %}
+                            {% include '/views/noPermissionButtonModal.html.twig' %}
+                        {% else %}
+                            <button id="btnShowAllRoles" type="submit" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-list pull-left"></span>Your role: {{ user.role.name }}</button>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <button id="logout" type="submit" class="btn btn-lg btn-default" onclick="logout();"><span class="glyphicon glyphicon-log-out pull-left" style="color: red"></span> Logout</button>
+                    </div>
+                </div>
+                <div class="col-md-4" id="rightBlank"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#btnShowAllRoles').on('click', function() {
+           window.location.href = '{{ urlRoot }}roles/show/all';
+        });
+
+        function logout() {
+            $.ajax({
+                type: "POST",
+                url: "{{ app.urlRoot }}user/logout",
+                cache: false,
+                success: function(data) {
+                    window.location = window.location.href;
+                }
+            });
+            return true;
+        }
+    </script>
+{% endblock content %}

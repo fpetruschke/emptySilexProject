@@ -1,0 +1,11 @@
+emptyProjectSilex\Model\Role:
+  type: entity
+  table: roles
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string

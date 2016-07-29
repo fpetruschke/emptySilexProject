@@ -1,0 +1,117 @@
+{# Starting page login procedure #}
+{% extends '/base/layout.html.twig' %}
+{% block content %}
+    <style>
+        body {
+            overflow:hidden;
+        }
+        #templateHeader {
+            background-color: black;
+            text-align: center;
+        }
+        #templateContent {
+            margin-top: 2%;
+        }
+        .btn {
+            width: 100%;
+            margin-bottom: 2%;
+        }
+        input {
+            width: 100%;
+        }
+        #notify {
+            margin: 0 auto;
+            width: 100%;
+            text-align: center
+        }
+        #btnLogin {
+            margin-top: 2%;
+        }
+    </style>
+
+    <div id="templateWrapper">
+        <div id="templateHeader">
+            <img src="{{ app.serverRoot }}img/silexExample.png" style='width:30%;' border="0">
+        </div>
+        <div class="alert alert-info text-center" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Wait:</strong>
+            Did you already create the log-files ? Run <i>php app/cli/createEmptyLogs.php -h</i>
+        </div>
+        <div class="alert alert-warning" id="notify" role="alert">
+            <strong>Ungültige Eingabe:</strong>
+            Nutzername und Passwort müssen eingegeben werden.
+        </div>
+        <div id="templateContent">
+            <div class="row">
+                <div class="col-md-4" id="leftBlank"></div>
+                <div class="col-md-4" id="center">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Login</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="input-group input-group-lg" style="margin-bottom: 2%">
+                                  <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                  </span>
+                                <input class="form-control" id="username" type="text" placeholder="Nutzername">
+                            </div>
+                            <div class="input-group input-group-lg">
+                                  <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                  </span>
+                                <input class="form-control" id="password" type="password" placeholder="Passwort">
+                            </div>
+                            <button type="submit" id="btnLogin" value="Login" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-log-in pull-left"></span> Login</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" id="rightBlank"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#notify').hide(0);
+        function onSuccess(data, status) {
+            window.scrollTo(0,0);
+            $('#notify').replaceWith('<div class="alert alert-success" role="alert">' +
+                    '<p style="margin: 0 auto; width: 100%; z-index: 9999; text-align: center"><strong>Login erfolgreich</strong></p>' +
+                    '</div>').fadeIn(100);
+        }
+
+        function onError(data, status) {
+            window.scrollTo(0,0);
+            $('#notify').replaceWith('<div class="alert alert-danger" role="alert">' +
+                    '<p style="margin: 0 auto; width: 100%; z-index: 9999; text-align: center"><strong>Login ungültig.</strong></p>' +
+                    '</div>').fadeIn(100);
+        }
+
+        $('#btnLogin').click(function(){
+            $('#notify').hide(0);
+            var user = $('#username').val();
+            var password = $('#password').val();
+            if(''=== user || ''=== password) {
+                $('#notify').fadeIn(100);
+            } else {
+                var userdata = {'user':user, 'pwd':password};
+                $.ajax({
+                    type: "POST",
+                    url: "{{ app.urlRoot }}user/loginCheck",
+                    cache: false,
+                    data: {request:JSON.stringify(userdata)},
+                    success: function(data) {
+                        if (data === 'Login') {
+                            window.location = '{{ app.urlRoot }}home';
+                        }
+                        else {
+                            onError();
+                        }
+                    }
+                });
+                return true;
+            }
+        });
+    </script>
+{% endblock content %}

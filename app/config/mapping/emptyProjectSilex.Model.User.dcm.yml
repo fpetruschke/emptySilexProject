@@ -1,0 +1,36 @@
+emptyProjectSilex\Model\User:
+  type: entity
+  table: users
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+    firstname:
+      type: string
+    contraction:
+      type: string
+    callthrough:
+      type: string
+    username:
+      type: string
+    password:
+      type: string
+    email:
+      type: string
+    created_at:
+      type: datetime
+  manyToOne:
+    role:
+      targetEntity: Role
+      joinColumn:
+        name: role_id
+        referencedColumnName: id
+    createdBy:
+      targetEntity: User
+      joinColumn:
+        name: createdBy
+        referencedColumnName: id
