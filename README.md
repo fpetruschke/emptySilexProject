@@ -1,56 +1,63 @@
 # emptyProject - Silex
 
-Basierend auf Silex 1.3 ( [http://silex.sensiolabs.org/documentation](http://silex.sensiolabs.org/documentation) )
+Based on Silex 1.3 ( [http://silex.sensiolabs.org/documentation](http://silex.sensiolabs.org/documentation) )
 
-AUTOR: Florian Petruschke    
-STAND: 29.07.2016  
+AUTHOR: Florian Petruschke
 
 ------
 
 # Inhalt
 
-* [Voraussetzungen](#min.-voraussetzungen)
-* [Abhängigkeiten](#abh-ngigkeiten)
+* [Requirements](#requirements)
+* [Dependencies](#dependencies)
 * [Installation](#installation)
-* [Testen](#testen)
+* [Testing](#testing)
 * [Logging](#logging)
-* [Debugging Hilfe](#debugging-hilfe)
+* [Debugging help](#debugging-help)
 
 ------
 
-## min. Voraussetzungen
+## Requirements
 
 * Apache WebServer >=2.4.7
 * PHP >=5.4
 * MySQL Server >=5.5.47 
 * Composer >= 1.0.0-alpha10
 
-## Abhänigkeiten
+## Dependencies
+
 ```
-    "silex/silex": "~1.3",
-    "twig/twig": ">=1.8,<2.0-dev",
-    "symfony/yaml":"v2.2.0",
-    "symfony/config":"v2.2.0",
-    "doctrine/orm": "^2.5",
-    "monolog/monolog": "^1.17"
-    "phpunit/phpunit": "4.8.*"
-```
+    "silex/silex": "~1.3",  
+    "twig/twig": ">=1.8,<2.0-dev",  
+    "symfony/yaml":"v2.2.0",  
+    "symfony/config":"v2.2.0",  
+    "doctrine/orm": "^2.5",  
+    "monolog/monolog": "^1.17"   
+    "phpunit/phpunit": "4.8.*"  
+``` 
 
 ------
 
 ## Installation
 
 ### Git Clone
-Klonen des Repositories.  
+First of all you need to clone or download this repository.  
+Make sure you have the permissions to read, write and execute.  
 
 ### Composer update
-Installation der benötigten externen Ressourcen und Initialisierung des Autoloadings  
-`composer install` | `composer update`
+Now you need to run a composer install:
+
+`composer install`
 
 #### .htaccess
-Erstellen einer `.htaccess`-Datei im root-Verzeichnis mit folgendem Inhalt:  
+We want to address this little project with typing **`localhost/emptySilex-Project/`**.  
+Since the index.php is located under the web-directory we don't want to have to expand the url with /web.  
+Therefore we need to configure an `.htaccess`-file inside the root of the project.  
+Put following content into it:    
 
 ```
+// .htaccess
+
 <IfModule mod_rewrite.c>
     Options -MultiViews
     Options +FollowSymLinks
@@ -65,33 +72,40 @@ Erstellen einer `.htaccess`-Datei im root-Verzeichnis mit folgendem Inhalt:
 ```
 
 #### rewrite.mod
-Testen, ob die Apache `rewrite.load`-Mod aktiviert ist:
+Check if apaches' rewrite module is enabled: 
 
 `ll /etc/apache2/mods-enabled/ | grep 'rewrite.load'` 
 
-(Wenn die Mod nicht aktiviert ist, kann sie durch `sudo a2enmod rewrite` und einem Neustart des Apache Webservers aktiviert werden.)
+(If not (nothing shows up) run `sudo a2enmod rewrite` and restart your apache.)
 
-### index.php  
-**In der index.php müssen die Root-Urls geprüft werden!**
+### web/index.php  
+
+**Here you have to check the roots: **
 
 ```php
+
+// web/index.php
 
 /**
  * defining the projects root
  */
-$app['serverRoot']  = /*Root für alle assets (css, img, js)      */ "/emptyProjectSilex/web/";
-$app['urlRoot']     = /*Root für alle URLs (z.B. ajax-Requests): */ "/emptyProjectSilex/";
+$app['serverRoot']  = /*Root for all asset stuff (css, img, js)      */ "/emptyProjectSilex/web/";
+$app['urlRoot']     = /*Root for your callable urls (ajax-requests): */ "/emptyProjectSilex/";
 
 ```
 
-**Außerdem muss die Datenbank erstellt...**   
+### Database
 
-    Hierzu kann das database-script im scripts-Verzeichnis verwendet werden.
+**Now you have to create the database...**   
 
-**... und eingebunden werden:**
+    ...just execute the database-script inside the scripts-directory...
+
+**... and check for the parameters:**
 
 
 ```php
+
+// web/index.php
 
 $app['eM'] = function ($app) {
     $isDevMode = true;
@@ -117,8 +131,8 @@ $app['eM'] = function ($app) {
 ```
 
 ### Log files
-Folgende Log-files müssen unter `app/log/` vorhanden sein:
-**(Für das Anlegen kann das CLI-Tool "createEmptyLogs" genutzt werden: `php /path/to/project/app/cli/createEmptyLogs.php -h`)**
+If you want the application to read and write log files under `app/log/` check, if the necessary log files are existent:
+**(For automatically creating the log-files you can execute following script: `php /path/to/project/app/cli/createEmptyLogs.php -h`)**
 
 * AUTH.log
 * BASE.log
@@ -128,19 +142,19 @@ Folgende Log-files müssen unter `app/log/` vorhanden sein:
 
 ------
 
-# Testen
+# Testing
 
 ## PHPUnit
 
-PHPUnit-Tests befinden sich im Verzeichnis `tests/MVC/`.
+PHPUnit-Tests are unser `tests/MVC/`.
 
-Tests ausführen: **`phpunit --bootstrap vendor/autoload.php tests/MVC/`**
+Execute tests: **`phpunit --bootstrap vendor/autoload.php tests/MVC/`**
 
-...mit Testdox: **`phpunit --bootstrap vendor/autoload.php --testdox tests/MVC/`**
+...with testdox: **`phpunit --bootstrap vendor/autoload.php --testdox tests/MVC/`**
 
-...mit Coverage(HTML): **`phpunit --bootstrap vendor/autoload.php --coverage-html tests/Coverage tests/MVC/`**
+...with coverage(HTML): **`phpunit --bootstrap vendor/autoload.php --coverage-html tests/Coverage tests/MVC/`**
 
-Coverage-Verzeichnis: `tests/Coverage`
+Coverage-directory: `tests/Coverage`
 
 ------
 
@@ -149,29 +163,32 @@ Coverage-Verzeichnis: `tests/Coverage`
 
 # Logging
 
-Die Anwendung schreibt an einigen Stellen in Logfiles. Die oben genannten Log-files und ihre Funktionen:
+The software can write log-files. The above mentioned files and their content:  
 
-* **AUTH** Login-Versuche  
-* **BASE** Änderung der Stammdaten (Nutzer, Räume, Abteilungen, Gerätetypen, Hersteller)  
-* **CREATE** Erstellen von Geräten  
-* **DELETE** Löschen von Geräten  
-* **EDIT** Änderung von Gerätedaten (auf Geräteebene)  
+* **AUTH** Login-events
+* **BASE** <could be something like changing base data>
+* **CREATE** <could be something like creating users>
+* **DELETE** <could be something like deleting users>
+* **EDIT** <could be something like editing users> 
+ 
+By defaul those log files can grow up to max 5MB.  
+If the file is growing bigger than that, it will automatically be cleared except of the last 100 lines.  
 
-Defaultmäßig wird die maximale Größe der Logfiles auf 5MB gesetzt.  
-Wird diese Größe überschritten, wird die betreffende Logdatei standardmäßig bis auf die letzten 100 Zeilen geleert.
-
-Diese Standardwerte sind in `app/MVC/Controller/Tools/logController.php` konfigurierbar.
+Those default values are configurable inside the `app/MVC/Controller/Tools/logController.php`.
 
 ------
 
-# Debugging Hilfe
+# Debugging help
 
-Zum Debuggen kann Silex' Debugging-Modus eingeschaltet werden.  
-Dazu einfach in der index.php `$app['debug'] = true;` setzen.
+For debugging you can use Silex' Debugging-Mode.  
+If enabled there will also be a little debugging frame showing current routes and stuff.
 
+```php
 
-Ferner wird eine kleine Dropdown-Debugging-Hilfe angezeigt:
+// web/index.php
 
-![debugging Helper](http://s940-gitlab-01.optadata-gruppe.local/dzh/emptyProjectSilex/tree/master/web/img/debugHelper.png)
+`$app['debug'] = true;`
+
+```
 
 ------
