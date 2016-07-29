@@ -1,18 +1,19 @@
 # emptyProject - Silex
 
-Based on Silex 1.3 ( [http://silex.sensiolabs.org/documentation](http://silex.sensiolabs.org/documentation) )
+Preconfigured web application based on Silex 1.3 ( [http://silex.sensiolabs.org/documentation](http://silex.sensiolabs.org/documentation) )
 
 AUTHOR: Florian Petruschke
 
 ------
 
-# Inhalt
+# Content
 
 * [Requirements](#requirements)
 * [Dependencies](#dependencies)
 * [Installation](#installation)
 * [Testing](#testing)
 * [Logging](#logging)
+* [Developing](#developing)
 * [Debugging help](#debugging-help)
 
 ------
@@ -35,6 +36,8 @@ AUTHOR: Florian Petruschke
     "monolog/monolog": "^1.17"   
     "phpunit/phpunit": "4.8.*"  
 ``` 
+
+The project uses jQuery(v1.12.0) and Bootstrap(v3.3.6).
 
 ------
 
@@ -135,10 +138,8 @@ If you want the application to read and write log files under `app/log/` check, 
 **(For automatically creating the log-files you can execute following script: `php /path/to/project/app/cli/createEmptyLogs.php -h`)**
 
 * AUTH.log
-* BASE.log
-* CREATE.log
-* DELETE.log
-* EDIT.log
+
+(Deleted other logs - see further below for more information about the logging)  
 
 ------
 
@@ -156,8 +157,6 @@ Execute tests: **`phpunit --bootstrap vendor/autoload.php tests/MVC/`**
 
 Coverage-directory: `tests/Coverage`
 
-------
-
 
 ------
 
@@ -166,15 +165,50 @@ Coverage-directory: `tests/Coverage`
 The software can write log-files. The above mentioned files and their content:  
 
 * **AUTH** Login-events
-* **BASE** <could be something like changing base data>
-* **CREATE** <could be something like creating users>
-* **DELETE** <could be something like deleting users>
-* **EDIT** <could be something like editing users> 
+
+You can add as many log files and log file types as you want.  
+
+You'd simply write to them using something like that:  
+
+```php  
+
+// whereverYouNeedIt.php
+$app['log']->write('NAMEOFYOURLOGFILE', '[USERNAME] [ACTIONNAME] [METHOD] [STATUS]');
+
+```
+
+**TIME** 
+* A timestamp is automatically added to every entry your application creates - format: "\[Dayname dd.mm.YYYY H:m:s\]"
+* The timezone is set to Europe/Berlin. Customize it in the app/MVC/Controller/Tools/logController.php.
  
+**FILESIZE**  
 By defaul those log files can grow up to max 5MB.  
 If the file is growing bigger than that, it will automatically be cleared except of the last 100 lines.  
 
 Those default values are configurable inside the `app/MVC/Controller/Tools/logController.php`.
+
+------
+
+# Developing
+
+As you can see in the project structure, MVC and public folder are separeted.  
+If you want to add something, you usually do one or more of the following: 
+
+* add a new route for the action/method/whatever --> ('app/config/routes.yml')
+* add the action/method/whatever --> referenced controller inside the created route **`IMPORTANT: Silex' Controllers always need Application $app and always need a return statement`**
+* create Model --> app/MVC/Model/YOURMODEL.php **`IMPORTANT: naming your model attributes as you do in the db table saves you a lot of time searching for mistakes`**
+* create Model mapping --> app/config/mapping/emptyProjectSilex.Model.YOURMODEL.dcm.yml **`IMPORTANT: Also keep the naming strategy!`**
+* create the responsing database entries or update the database or table structure
+* add the template for the action/method/whatever under app/MVC/View/YOURTEMPLATE.html.twig **`IMPORTANT: For easy access to php variables use twig`**
+
+I provided some templating under app/MVC/View/base.  
+* Add new js-libraries to the javascript.html.twig (**absolutely mind the order of the libs!**)
+* Add styles under the head.html.twig
+* Edit the layout skeleton under layout.html.twig
+* when adding new templates mind to add {% extends '/base/layout.html.twig' %} {% block content %} into the first lines
+* put the content inside {% content YOURCONTENTNAME %} CONTENT {% endblock YOURCONTENTNAME %}
+
+**`For more information and help go visit silex, doctrine2, twig, bootstrap and jquery sites - also remember stackoverflow`**
 
 ------
 
@@ -192,3 +226,5 @@ If enabled there will also be a little debugging frame showing current routes an
 ```
 
 ------
+
+**Have fun!**

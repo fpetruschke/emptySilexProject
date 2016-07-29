@@ -22,7 +22,7 @@ class UserController
     /**
      * login
      *
-     * default action when visiting inventory
+     * default action when visiting application
      *
      * @param Application $app  Silex Application
      * @return mixed            Renders template

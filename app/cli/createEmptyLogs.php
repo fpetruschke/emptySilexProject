@@ -18,7 +18,7 @@
 class EmptyLogs {
 
     protected $createDirInPath = "../logs/";
-    protected $logFiles = array("AUTH.log", "BASE.log", "CREATE.log", "DELETE.log", "EDIT.log");
+    protected $logFiles = array("AUTH.log");
 
     protected $invalidParamter;
     protected $helpText;

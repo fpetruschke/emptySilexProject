@@ -75,18 +75,6 @@ class AppController
         $users = $repoUsers->findAll();
         $user = $repoUsers->findOneBy(array('id' => $_SESSION['user']));
 
-        /*$qb = $em->createQueryBuilder();
-        $qb->select($qb->expr()->count('u.id'));
-        $qb->from('emptyProjectSilex\Model\User','u');
-        $count = $qb->getQuery()->getResult();*/
-
-        /*$rows = $this->getDoctrine()->getManager()
-            ->createQuery(
-                'SELECT COUNT(users.id),users.role_id FROM emptyProjectSilex\Model\User users GROUP BY users.role_id;'
-            )
-            ->getArrayResult();
-        $count = count($rows);*/
-
         $qb = $em->createQueryBuilder();
         $roleSums = $qb->select('COUNT(users.id)')
             ->from('emptyProjectSilex\Model\User', 'users')

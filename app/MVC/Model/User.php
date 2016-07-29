@@ -7,9 +7,6 @@ namespace emptyProjectSilex\Model;
  *
  * Represents the user
  *
- * User can be coworker and are linked to devices which they are using.
- * They can also be user of the inventory tool and have a user account if created with username and password.
- *
  * @author  Florian Petruschke <florian.petruschke@gmail.com>
  * @date    26.01.16  -  15:08
  * @version 1.0

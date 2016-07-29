@@ -1,3 +1,4 @@
+{# debugging element #}
 <style>
     .foot {
         border-top: 1px solid #999999;
@@ -83,38 +84,6 @@
         </div>
     </div>
 </div>
-
-<!--<div class="alert alert-info" id="#debugContainer">
-    <div class="container">
-        <h2>Debug-mode</h2>
-        <div class="list-group">
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">current Route</h4>
-                <p class="list-group-item-text">{{ app.request.get('_route') }}</p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">current Controller</h4>
-                <p class="list-group-item-text">{{ app.request.get('_controller') }}</p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">currently running on docker?</h4>
-                <p class="list-group-item-text">{{ app.onDocker ? 'true' : 'false' }}</p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">server/assets root (app.serverRoot)</h4>
-                <p class="list-group-item-text">{{ app.serverRoot }}</p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">routing / url root (app.urlRoot)</h4>
-                <p class="list-group-item-text">{{ app.urlRoot }}</p>
-            </a>
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">currently logged in user</h4>
-                <p class="list-group-item-text">{{ user.username ? user.username : 'none' }}</p>
-            </a>
-        </div>
-    </div>
-</div>-->
 
 <script>
     $(document).ready(function() {
